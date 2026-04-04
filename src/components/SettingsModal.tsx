@@ -10,6 +10,7 @@ import {
   CreditCard,
   Shield,
   MessageSquare,
+  FolderOpen,
 } from "lucide-react";
 import SidebarModal, { SidebarItem } from "./ui/SidebarModal";
 import SettingsPage, { SettingsSectionType } from "./SettingsPage";
@@ -85,6 +86,13 @@ export default function SettingsModal({ open, onOpenChange, initialSection }: Se
         icon: MessageSquare,
         description: t("settingsModal.sections.agentMode.description"),
         group: t("settingsModal.groups.speechAi"),
+      },
+      {
+        id: "watchFolder",
+        label: t("settingsModal.sections.watchFolder.label"),
+        icon: FolderOpen,
+        description: t("settingsModal.sections.watchFolder.description"),
+        group: t("settingsModal.groups.app"),
       },
       {
         id: "privacyData",

@@ -883,6 +883,10 @@
       "agentMode": {
         "label": "Modalità Agente",
         "description": "Assistente vocale chat"
+      },
+      "watchFolder": {
+        "label": "Cartelle monitorate",
+        "description": "Trascrizione automatica dai dispositivi"
       }
     },
     "title": "Impostazioni"
@@ -2096,5 +2100,16 @@
     "close": "Chiudi chat",
     "newChat": "Nuova chat",
     "conversationSelector": "Cambia conversazione"
+  },
+  "watchFolder": {
+    "sectionTitle": "Cartelle monitorate",
+    "sectionDescription": "Trascrizione automatica delle registrazioni sincronizzate da un registratore vocale o dispositivo",
+    "addFolder": "Aggiungi cartella",
+    "emptyState": "Nessuna cartella monitorata",
+    "emptyHint": "Aggiungi una cartella per trascrivere automaticamente i nuovi file audio — compatibile con qualsiasi registratore USB o cartella sincronizzata dal telefono",
+    "remove": "Rimuovi",
+    "statusWatching": "In ascolto",
+    "statusError": "Errore",
+    "footerHint": "Formati supportati: MP3, WAV, M4A, FLAC, AAC, OGG, WebM, OPUS"
   }
 }

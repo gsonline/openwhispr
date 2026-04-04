@@ -207,6 +207,7 @@ const MeetingProcessDetector = require("./src/helpers/meetingProcessDetector");
 const AudioActivityDetector = require("./src/helpers/audioActivityDetector");
 const AudioTapManager = require("./src/helpers/audioTapManager");
 const MeetingDetectionEngine = require("./src/helpers/meetingDetectionEngine");
+const WatchFolderManager = require("./src/helpers/watchFolderManager");
 const { i18nMain, changeLanguage } = require("./src/helpers/i18nMain");
 const { ensureYdotool } = require("./src/helpers/ensureYdotool");
 
@@ -226,6 +227,7 @@ let windowsKeyManager = null;
 let textEditMonitor = null;
 let whisperCudaManager = null;
 let googleCalendarManager = null;
+let watchFolderManager = null;
 let meetingDetectionEngine = null;
 let audioTapManager = null;
 let qdrantManager = null;
@@ -325,6 +327,11 @@ function initializeCoreManagers() {
     audioTapManager,
     getTrayManager: () => trayManager,
   });
+
+  watchFolderManager = new WatchFolderManager();
+  watchFolderManager.setDependencies(ipcHandlers, databaseManager, windowManager);
+  ipcHandlers.setWatchFolderManager(watchFolderManager);
+  watchFolderManager.start();
 }
 
 // Phase 2: Non-critical setup after windows are visible
@@ -1166,6 +1173,9 @@ if (gotSingleInstanceLock) {
     }
     if (audioTapManager) {
       audioTapManager.stop().catch(() => {});
+    }
+    if (watchFolderManager) {
+      watchFolderManager.stop();
     }
     if (ipcHandlers) {
       ipcHandlers._cleanupTextEditMonitor();

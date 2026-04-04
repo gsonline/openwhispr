@@ -104,6 +104,7 @@ class IPCHandlers {
     this.googleCalendarManager = managers.googleCalendarManager;
     this.meetingDetectionEngine = managers.meetingDetectionEngine;
     this.audioTapManager = managers.audioTapManager;
+    this.watchFolderManager = null; // set via setWatchFolderManager() after construction
     this.sessionId = crypto.randomUUID();
     this.assemblyAiStreaming = null;
     this.deepgramStreaming = null;
@@ -4983,6 +4984,47 @@ class IPCHandlers {
         return { canceled: true };
       }
     });
+
+    // Watch folder handlers
+    ipcMain.handle("watch-folder-add", async (_event, folderPath) => {
+      if (!this.watchFolderManager) return { success: false, error: "WatchFolderManager not initialized" };
+      return this.watchFolderManager.addFolder(folderPath);
+    });
+
+    ipcMain.handle("watch-folder-remove", async (_event, folderPath) => {
+      if (!this.watchFolderManager) return { success: false, error: "WatchFolderManager not initialized" };
+      return this.watchFolderManager.removeFolder(folderPath);
+    });
+
+    ipcMain.handle("watch-folder-list", async () => {
+      if (!this.watchFolderManager) return [];
+      return this.watchFolderManager.getFolders();
+    });
+
+    ipcMain.handle("watch-folder-select-dir", async () => {
+      const { dialog } = require("electron");
+      const result = await dialog.showOpenDialog({ properties: ["openDirectory"] });
+      if (result.canceled || !result.filePaths.length) return { canceled: true };
+      return { canceled: false, folderPath: result.filePaths[0] };
+    });
+  }
+
+  setWatchFolderManager(watchFolderManager) {
+    this.watchFolderManager = watchFolderManager;
+  }
+
+  async transcribeAudioFileInternal(filePath, options = {}) {
+    const fs = require("fs");
+    try {
+      const audioBuffer = fs.readFileSync(filePath);
+      if (options.provider === "nvidia") {
+        return await this.parakeetManager.transcribeLocalParakeet(audioBuffer, options);
+      }
+      return await this.whisperManager.transcribeLocalWhisper(audioBuffer, options);
+    } catch (error) {
+      debugLogger.error("Audio file transcription error (internal)", { error: error.message });
+      return { success: false, error: error.message };
+    }
   }
 
   broadcastToWindows(channel, payload) {

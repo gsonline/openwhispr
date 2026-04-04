@@ -931,6 +931,10 @@
       "agentMode": {
         "label": "Agent Mode",
         "description": "Voice chat assistant"
+      },
+      "watchFolder": {
+        "label": "Watch Folders",
+        "description": "Auto-transcribe from devices"
       }
     },
     "title": "Settings"
@@ -2096,5 +2100,16 @@
     "close": "Close chat",
     "newChat": "New chat",
     "conversationSelector": "Switch conversation"
+  },
+  "watchFolder": {
+    "sectionTitle": "Watch Folders",
+    "sectionDescription": "Auto-transcribe recordings synced from a voice recorder or device",
+    "addFolder": "Add Folder",
+    "emptyState": "No watch folders yet",
+    "emptyHint": "Add a folder to automatically transcribe new audio files — works with any USB voice recorder, or a folder synced from your phone",
+    "remove": "Remove",
+    "statusWatching": "Watching",
+    "statusError": "Error",
+    "footerHint": "Supported formats: MP3, WAV, M4A, FLAC, AAC, OGG, WebM, OPUS"
   }
 }

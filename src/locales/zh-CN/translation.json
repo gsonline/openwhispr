@@ -883,6 +883,10 @@
       "agentMode": {
         "label": "智能助手模式",
         "description": "语音聊天助手"
+      },
+      "watchFolder": {
+        "label": "监听文件夹",
+        "description": "从设备自动转录"
       }
     },
     "title": "设置"
@@ -1001,7 +1005,12 @@
           "annualEquivalent": "$16.67",
           "includesPrefix": "所有 Pro 功能 +",
           "badge": "最受欢迎",
-          "features": ["无限会议录制", "代理模式", "与您的数据对话（即将推出）", "优先支持"],
+          "features": [
+            "无限会议录制",
+            "代理模式",
+            "与您的数据对话（即将推出）",
+            "优先支持"
+          ],
           "cta": "开始使用",
           "switchToAnnual": "切换为年付"
         },
@@ -2091,5 +2100,16 @@
     "close": "关闭聊天",
     "newChat": "新对话",
     "conversationSelector": "切换对话"
+  },
+  "watchFolder": {
+    "sectionTitle": "监听文件夹",
+    "sectionDescription": "自动转录从录音机或设备同步的录音",
+    "addFolder": "添加文件夹",
+    "emptyState": "暂无监听文件夹",
+    "emptyHint": "添加文件夹以自动转录新音频文件——支持任何 USB 录音笔或从手机同步的文件夹",
+    "remove": "移除",
+    "statusWatching": "监听中",
+    "statusError": "错误",
+    "footerHint": "支持格式：MP3、WAV、M4A、FLAC、AAC、OGG、WebM、OPUS"
   }
 }

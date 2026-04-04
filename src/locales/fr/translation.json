@@ -883,6 +883,10 @@
       "agentMode": {
         "label": "Mode Agent",
         "description": "Assistant vocal de chat"
+      },
+      "watchFolder": {
+        "label": "Dossiers surveillés",
+        "description": "Transcription automatique depuis les appareils"
       }
     },
     "title": "Paramètres"
@@ -2096,5 +2100,16 @@
     "close": "Fermer le chat",
     "newChat": "Nouvelle discussion",
     "conversationSelector": "Changer de conversation"
+  },
+  "watchFolder": {
+    "sectionTitle": "Dossiers surveillés",
+    "sectionDescription": "Transcription automatique des enregistrements synchronisés depuis un enregistreur vocal ou un appareil",
+    "addFolder": "Ajouter un dossier",
+    "emptyState": "Aucun dossier surveillé",
+    "emptyHint": "Ajoutez un dossier pour transcrire automatiquement les nouveaux fichiers audio — compatible avec tout enregistreur USB ou un dossier synchronisé depuis votre téléphone",
+    "remove": "Supprimer",
+    "statusWatching": "Surveillance",
+    "statusError": "Erreur",
+    "footerHint": "Formats pris en charge : MP3, WAV, M4A, FLAC, AAC, OGG, WebM, OPUS"
   }
 }

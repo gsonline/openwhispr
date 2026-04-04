@@ -721,4 +721,14 @@ contextBridge.exposeInMainWorld("electronAPI", {
   getUpdateNotificationData: () => ipcRenderer.invoke("get-update-notification-data"),
   updateNotificationReady: () => ipcRenderer.invoke("update-notification-ready"),
   updateNotificationRespond: (action) => ipcRenderer.invoke("update-notification-respond", action),
+
+  // Watch folder (hardware voice recorder support)
+  addWatchFolder: (folderPath) => ipcRenderer.invoke("watch-folder-add", folderPath),
+  removeWatchFolder: (folderPath) => ipcRenderer.invoke("watch-folder-remove", folderPath),
+  listWatchFolders: () => ipcRenderer.invoke("watch-folder-list"),
+  selectWatchFolderDir: () => ipcRenderer.invoke("watch-folder-select-dir"),
+  onWatchFolderUpdated: registerListener(
+    "watch-folder-updated",
+    (callback) => (_event, data) => callback(data)
+  ),
 });

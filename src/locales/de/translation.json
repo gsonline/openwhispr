@@ -883,6 +883,10 @@
       "agentMode": {
         "label": "Agent-Modus",
         "description": "Sprach-Chat-Assistent"
+      },
+      "watchFolder": {
+        "label": "Überwachte Ordner",
+        "description": "Auto-Transkription von Geräten"
       }
     },
     "title": "Einstellungen"
@@ -2096,5 +2100,16 @@
     "close": "Chat schließen",
     "newChat": "Neuer Chat",
     "conversationSelector": "Unterhaltung wechseln"
+  },
+  "watchFolder": {
+    "sectionTitle": "Überwachte Ordner",
+    "sectionDescription": "Automatische Transkription von Aufnahmen, die von einem Sprachrekorder oder Gerät synchronisiert werden",
+    "addFolder": "Ordner hinzufügen",
+    "emptyState": "Keine überwachten Ordner",
+    "emptyHint": "Füge einen Ordner hinzu, um neue Audiodateien automatisch zu transkribieren — kompatibel mit jedem USB-Rekorder oder einem vom Telefon synchronisierten Ordner",
+    "remove": "Entfernen",
+    "statusWatching": "Überwacht",
+    "statusError": "Fehler",
+    "footerHint": "Unterstützte Formate: MP3, WAV, M4A, FLAC, AAC, OGG, WebM, OPUS"
   }
 }

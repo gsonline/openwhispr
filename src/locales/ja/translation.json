@@ -883,6 +883,10 @@
       "agentMode": {
         "label": "エージェントモード",
         "description": "音声チャットアシスタント"
+      },
+      "watchFolder": {
+        "label": "監視フォルダ",
+        "description": "デバイスから自動文字起こし"
       }
     },
     "title": "設定"
@@ -2096,5 +2100,16 @@
     "close": "チャットを閉じる",
     "newChat": "新しいチャット",
     "conversationSelector": "会話を切り替え"
+  },
+  "watchFolder": {
+    "sectionTitle": "監視フォルダ",
+    "sectionDescription": "ボイスレコーダーやデバイスから同期された録音を自動的に文字起こし",
+    "addFolder": "フォルダを追加",
+    "emptyState": "監視フォルダがありません",
+    "emptyHint": "フォルダを追加すると、新しい音声ファイルを自動的に文字起こしします — USBボイスレコーダー、スマートフォンから同期したフォルダに対応",
+    "remove": "削除",
+    "statusWatching": "監視中",
+    "statusError": "エラー",
+    "footerHint": "対応形式: MP3, WAV, M4A, FLAC, AAC, OGG, WebM, OPUS"
   }
 }

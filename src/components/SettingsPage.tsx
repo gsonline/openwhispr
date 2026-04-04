@@ -66,6 +66,7 @@ import { ActivationModeSelector } from "./ui/ActivationModeSelector";
 import { Toggle } from "./ui/toggle";
 import DeveloperSection from "./DeveloperSection";
 import AgentModeSettings from "./settings/AgentModeSettings";
+import WatchFolderSection from "./WatchFolderSection";
 import LanguageSelector from "./ui/LanguageSelector";
 import { Skeleton } from "./ui/skeleton";
 import { Progress } from "./ui/progress";
@@ -96,7 +97,8 @@ export type SettingsSectionType =
   | "aiModels"
   | "agentConfig"
   | "prompts"
-  | "agentMode";
+  | "agentMode"
+  | "watchFolder";
 
 interface SettingsPageProps {
   activeSection?: SettingsSectionType;
@@ -3839,6 +3841,9 @@ EOF`,
 
       case "agentMode":
         return <AgentModeSettings />;
+
+      case "watchFolder":
+        return <WatchFolderSection />;
 
       default:
         return null;
