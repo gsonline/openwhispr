@@ -883,6 +883,10 @@
       "agentMode": {
         "label": "智慧助手模式",
         "description": "語音聊天助手"
+      },
+      "watchFolder": {
+        "label": "監聽資料夾",
+        "description": "從裝置自動轉錄"
       }
     },
     "title": "設定"
@@ -1001,7 +1005,12 @@
           "annualEquivalent": "$16.67",
           "includesPrefix": "所有 Pro 功能 +",
           "badge": "最熱門",
-          "features": ["無限會議錄製", "代理模式", "與您的資料對話（即將推出）", "優先支援"],
+          "features": [
+            "無限會議錄製",
+            "代理模式",
+            "與您的資料對話（即將推出）",
+            "優先支援"
+          ],
           "cta": "開始使用",
           "switchToAnnual": "切換為年付"
         },
@@ -2091,5 +2100,16 @@
     "close": "關閉聊天",
     "newChat": "新對話",
     "conversationSelector": "切換對話"
+  },
+  "watchFolder": {
+    "sectionTitle": "監聽資料夾",
+    "sectionDescription": "自動轉錄從錄音機或裝置同步的錄音",
+    "addFolder": "新增資料夾",
+    "emptyState": "尚無監聽資料夾",
+    "emptyHint": "新增資料夾以自動轉錄新音訊檔案——支援任何 USB 錄音機或從手機同步的資料夾",
+    "remove": "移除",
+    "statusWatching": "監聽中",
+    "statusError": "錯誤",
+    "footerHint": "支援格式：MP3、WAV、M4A、FLAC、AAC、OGG、WebM、OPUS"
   }
 }

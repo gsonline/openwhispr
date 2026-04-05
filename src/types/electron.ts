@@ -470,6 +470,15 @@ declare global {
       ) => Promise<{ success: boolean; text?: string; error?: string }>;
       getPathForFile: (file: File) => string;
 
+      // Watch folder (hardware voice recorder support)
+      listWatchFolders: () => Promise<Array<{ path: string; status: "watching" | "error" }>>;
+      addWatchFolder: (folderPath: string) => Promise<{ success: boolean; error?: string }>;
+      removeWatchFolder: (folderPath: string) => Promise<{ success: boolean; error?: string }>;
+      selectWatchFolderDir: () => Promise<{ canceled: boolean; folderPath?: string }>;
+      onWatchFolderUpdated?: (
+        callback: (data: { folders: Array<{ path: string; status: "watching" | "error" }> }) => void
+      ) => () => void;
+
       // Note event listeners
       onNoteAdded?: (callback: (note: NoteItem) => void) => () => void;
       onNoteUpdated?: (callback: (note: NoteItem) => void) => () => void;

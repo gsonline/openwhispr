@@ -855,6 +855,10 @@
       "agentMode": {
         "label": "Modo Agente",
         "description": "Assistente de chat por voz"
+      },
+      "watchFolder": {
+        "label": "Pastas monitoradas",
+        "description": "Transcrição automática de dispositivos"
       }
     },
     "title": "Configurações"
@@ -2096,5 +2100,16 @@
     "close": "Fechar chat",
     "newChat": "Novo chat",
     "conversationSelector": "Trocar conversa"
+  },
+  "watchFolder": {
+    "sectionTitle": "Pastas monitoradas",
+    "sectionDescription": "Transcrição automática de gravações sincronizadas de um gravador de voz ou dispositivo",
+    "addFolder": "Adicionar pasta",
+    "emptyState": "Nenhuma pasta monitorada",
+    "emptyHint": "Adicione uma pasta para transcrever automaticamente novos arquivos de áudio — compatível com qualquer gravador USB ou pasta sincronizada do seu telefone",
+    "remove": "Remover",
+    "statusWatching": "Monitorando",
+    "statusError": "Erro",
+    "footerHint": "Formatos suportados: MP3, WAV, M4A, FLAC, AAC, OGG, WebM, OPUS"
   }
 }

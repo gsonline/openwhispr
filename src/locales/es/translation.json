@@ -883,6 +883,10 @@
       "agentMode": {
         "label": "Modo Agente",
         "description": "Asistente de chat por voz"
+      },
+      "watchFolder": {
+        "label": "Carpetas vigiladas",
+        "description": "Transcripción automática desde dispositivos"
       }
     },
     "title": "Ajustes"
@@ -2096,5 +2100,16 @@
     "close": "Cerrar chat",
     "newChat": "Nuevo chat",
     "conversationSelector": "Cambiar conversación"
+  },
+  "watchFolder": {
+    "sectionTitle": "Carpetas vigiladas",
+    "sectionDescription": "Transcripción automática de grabaciones sincronizadas desde una grabadora de voz o dispositivo",
+    "addFolder": "Añadir carpeta",
+    "emptyState": "No hay carpetas vigiladas",
+    "emptyHint": "Agrega una carpeta para transcribir automáticamente nuevos archivos de audio — compatible con cualquier grabadora USB o una carpeta sincronizada desde tu teléfono",
+    "remove": "Eliminar",
+    "statusWatching": "Vigilando",
+    "statusError": "Error",
+    "footerHint": "Formatos compatibles: MP3, WAV, M4A, FLAC, AAC, OGG, WebM, OPUS"
   }
 }
