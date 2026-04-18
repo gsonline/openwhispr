@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "./ui/button";
-import { Loader2, Sparkles, Cloud, X, Mic, Trash2 } from "lucide-react";
+import { Loader2, Sparkles, Cloud, X, Mic, Trash2, Zap } from "lucide-react";
 import TranscriptionItem from "./ui/TranscriptionItem";
 import type { TranscriptionItem as TranscriptionItemType } from "../types/electron";
 import { formatHotkeyLabel } from "../utils/hotkeys";
@@ -166,105 +166,38 @@ export default function HistoryView({
               </div>
             )}
             {isLoading ? (
-              <div className="rounded-lg border border-border bg-card/50 dark:bg-card/60 backdrop-blur-sm">
-                <div className="flex items-center justify-center gap-2 py-8">
+              <div className="rounded-lg border border-border bg-card/50 dark:bg-card/60">
+                <div className="flex items-center justify-center gap-2 py-10">
                   <Loader2 size={14} className="animate-spin text-primary" />
                   <span className="text-sm text-muted-foreground">{t("controlPanel.loading")}</span>
                 </div>
               </div>
             ) : history.length === 0 ? (
-              <div className="rounded-lg border border-border bg-card/50 dark:bg-card/60 backdrop-blur-sm">
-                <div className="flex flex-col items-center justify-center py-16 px-4">
-                  <svg
-                    className="text-foreground dark:text-white mb-5"
-                    width="64"
-                    height="64"
-                    viewBox="0 0 64 64"
-                    fill="none"
-                  >
-                    <rect
-                      x="24"
-                      y="6"
-                      width="16"
-                      height="28"
-                      rx="8"
-                      fill="currentColor"
-                      fillOpacity={0.04}
-                      stroke="currentColor"
-                      strokeOpacity={0.1}
-                    />
-                    <rect
-                      x="28"
-                      y="12"
-                      width="8"
-                      height="3"
-                      rx="1.5"
-                      fill="currentColor"
-                      fillOpacity={0.06}
-                    />
-                    <path
-                      d="M18 28c0 7.7 6.3 14 14 14s14-6.3 14-14"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeOpacity={0.07}
-                      strokeWidth={1.5}
-                      strokeLinecap="round"
-                    />
-                    <line
-                      x1="32"
-                      y1="42"
-                      x2="32"
-                      y2="50"
-                      stroke="currentColor"
-                      strokeOpacity={0.07}
-                      strokeWidth={1.5}
-                      strokeLinecap="round"
-                    />
-                    <line
-                      x1="26"
-                      y1="50"
-                      x2="38"
-                      y2="50"
-                      stroke="currentColor"
-                      strokeOpacity={0.07}
-                      strokeWidth={1.5}
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M12 20a2 2 0 0 1 0 8"
-                      stroke="currentColor"
-                      strokeOpacity={0.04}
-                      strokeWidth={1.5}
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M8 18a2 2 0 0 1 0 12"
-                      stroke="currentColor"
-                      strokeOpacity={0.03}
-                      strokeWidth={1.5}
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M52 20a2 2 0 0 0 0 8"
-                      stroke="currentColor"
-                      strokeOpacity={0.04}
-                      strokeWidth={1.5}
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M56 18a2 2 0 0 0 0 12"
-                      stroke="currentColor"
-                      strokeOpacity={0.03}
-                      strokeWidth={1.5}
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                  <h3 className="text-xs font-semibold text-foreground/70 dark:text-foreground/60 mb-2">
+              /* Empty state — improved visual */
+              <div className="rounded-lg border border-border/60 bg-card/30 dark:bg-card/40">
+                <div className="flex flex-col items-center justify-center py-14 px-6 text-center">
+                  {/* Mic illustration */}
+                  <div className="relative mb-5">
+                    <div className="w-14 h-14 rounded-2xl bg-primary/6 dark:bg-primary/8 border border-primary/10 dark:border-primary/12 flex items-center justify-center">
+                      <Mic size={24} className="text-primary/40 dark:text-primary/35" />
+                    </div>
+                    {/* Pulse rings */}
+                    <div className="absolute inset-0 rounded-2xl border border-primary/8 scale-110 opacity-60" />
+                    <div className="absolute inset-0 rounded-2xl border border-primary/5 scale-125 opacity-40" />
+                  </div>
+
+                  <h3 className="text-sm font-semibold text-foreground/70 dark:text-foreground/60 mb-1.5">
                     {t("controlPanel.history.empty")}
                   </h3>
-                  <div className="flex items-center gap-2 text-xs text-foreground/50 dark:text-foreground/25">
+                  <p className="text-xs text-foreground/45 dark:text-foreground/30 mb-4 max-w-[200px] leading-relaxed">
+                    {t("controlPanel.history.emptyHint", {
+                      defaultValue: "Your transcriptions will appear here",
+                    })}
+                  </p>
+
+                  <div className="flex items-center gap-2 text-xs text-foreground/45 dark:text-foreground/25 bg-muted/50 dark:bg-white/4 border border-border/40 dark:border-white/6 rounded-md px-3 py-2">
                     <span>{t("controlPanel.history.press")}</span>
-                    <kbd className="inline-flex items-center h-5 px-1.5 rounded-sm bg-surface-1 dark:bg-white/6 border border-border/50 text-xs font-mono font-medium text-foreground/60 dark:text-foreground/40">
+                    <kbd className="inline-flex items-center h-5 px-1.5 rounded-sm bg-background dark:bg-white/8 border border-border/60 text-xs font-mono font-medium text-foreground/60 dark:text-foreground/40 shadow-sm">
                       {formatHotkeyLabel(hotkey)}
                     </kbd>
                     <span>{t("controlPanel.history.toStart")}</span>
@@ -274,11 +207,17 @@ export default function HistoryView({
             ) : (
               <div className="group">
                 {groupedHistory.map((group, index) => (
-                  <div key={group.label} className={index > 0 ? "mt-4" : ""}>
+                  <div key={group.label} className={index > 0 ? "mt-5" : ""}>
+                    {/* Date group header */}
                     <div className="sticky -top-1 z-10 -mx-4 px-5 pt-2 pb-2 bg-background flex items-center justify-between">
-                      <span className="text-[11px] font-semibold text-muted-foreground dark:text-muted-foreground uppercase tracking-wide">
-                        {group.label}
-                      </span>
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="text-[11px] font-semibold text-muted-foreground dark:text-muted-foreground uppercase tracking-wide whitespace-nowrap">
+                          {group.label}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground/40 tabular-nums shrink-0">
+                          {group.items.length}
+                        </span>
+                      </div>
                       {index === 0 && (
                         <button
                           onClick={clearAllTranscriptions}

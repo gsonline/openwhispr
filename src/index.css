@@ -442,6 +442,18 @@ a:hover {
   }
 }
 
+/* Sidebar active-item accent bar fade-in */
+@keyframes accent-bar-in {
+  from {
+    opacity: 0;
+    transform: scaleY(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
 @keyframes waveform-bar {
   0%,
   100% {
