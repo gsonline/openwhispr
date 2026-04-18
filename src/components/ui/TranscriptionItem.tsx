@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "./button";
 import { Tooltip } from "./tooltip";
-import { Copy, Trash2, FileText, FolderOpen, RotateCcw, Loader2, AlertCircle } from "lucide-react";
+import { Copy, Trash2, FileText, FolderOpen, RotateCcw, Loader2, AlertCircle, Sparkles } from "lucide-react";
 import type {
   TranscriptionItem as TranscriptionItemType,
   TranscriptionErrorCode,
@@ -60,6 +60,7 @@ export default function TranscriptionItem({
   };
 
   const isFailed = item.status === "failed";
+  const isAiProcessed = item.is_processed === 1 || item.is_processed === true;
   const hasRawText = item.raw_text !== null;
   const hasAudio = item.has_audio === 1;
   const showUtilityGroup = hasRawText || hasAudio;
@@ -76,196 +77,214 @@ export default function TranscriptionItem({
   return (
     <div
       className={cn(
-        "group rounded-md border px-3 py-2.5 transition-colors duration-150",
+        "group relative rounded-lg border transition-all duration-150",
         isFailed
-          ? "border-destructive/30 bg-destructive/5 hover:bg-destructive/10"
+          ? "border-destructive/30 bg-destructive/5 hover:bg-destructive/8"
+          : isAiProcessed
+          ? "border-primary/20 dark:border-primary/15 bg-card/50 dark:bg-surface-2/60 hover:bg-primary/3 dark:hover:bg-primary/5"
           : "border-border/40 dark:border-border-subtle/60 bg-card/50 dark:bg-surface-2/60 hover:bg-muted/30 dark:hover:bg-surface-2/80"
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="flex items-start gap-3">
-        {formattedTime && (
-          <span className="shrink-0 text-[11px] text-muted-foreground tabular-nums pt-0.5">
-            {formattedTime}
-          </span>
-        )}
+      {/* AI-processed left accent bar */}
+      {isAiProcessed && !isFailed && (
+        <span className="absolute left-0 top-2 bottom-2 w-[2.5px] rounded-full bg-primary/40 dark:bg-primary/50" />
+      )}
 
-        {isFailed ? (
-          <div className="flex-1 min-w-0 flex items-start gap-2">
-            <AlertCircle size={14} className="shrink-0 text-destructive mt-0.5" />
-            <div className="min-w-0">
-              <p className="text-sm text-destructive font-medium">
-                {t("controlPanel.history.transcriptionFailed")}
-              </p>
-              {item.error_message && (
-                <p className="text-xs text-muted-foreground mt-0.5 truncate">
-                  {item.error_message}
+      <div className="px-3 py-2.5">
+        <div className="flex items-start gap-3">
+          <div className="flex flex-col items-start gap-1 shrink-0 pt-0.5 min-w-[36px]">
+            {formattedTime && (
+              <span className="text-[11px] text-muted-foreground tabular-nums leading-none">
+                {formattedTime}
+              </span>
+            )}
+            {isAiProcessed && !isFailed && (
+              <Tooltip content={t("controlPanel.history.aiProcessed", { defaultValue: "AI enhanced" })}>
+                <span className="inline-flex items-center">
+                  <Sparkles size={10} className="text-primary/60 dark:text-primary/50" />
+                </span>
+              </Tooltip>
+            )}
+          </div>
+
+          {isFailed ? (
+            <div className="flex-1 min-w-0 flex items-start gap-2">
+              <AlertCircle size={14} className="shrink-0 text-destructive mt-0.5" />
+              <div className="min-w-0">
+                <p className="text-sm text-destructive font-medium">
+                  {t("controlPanel.history.transcriptionFailed")}
                 </p>
-              )}
-              {isConfigError && (
-                <p className="text-xs text-muted-foreground mt-1">
-                  {hasAudio ? (
-                    <>
+                {item.error_message && (
+                  <p className="text-xs text-muted-foreground mt-0.5 truncate">
+                    {item.error_message}
+                  </p>
+                )}
+                {isConfigError && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {hasAudio ? (
+                      <>
+                        <button
+                          onClick={() => onOpenSettings?.()}
+                          className="text-primary hover:underline cursor-pointer"
+                        >
+                          {t("controlPanel.history.failedCtaSettings")}
+                        </button>{" "}
+                        {t("controlPanel.history.failedCtaAndRetry")}
+                      </>
+                    ) : (
                       <button
                         onClick={() => onOpenSettings?.()}
                         className="text-primary hover:underline cursor-pointer"
                       >
-                        {t("controlPanel.history.failedCtaSettings")}
-                      </button>{" "}
-                      {t("controlPanel.history.failedCtaAndRetry")}
-                    </>
-                  ) : (
+                        {t("controlPanel.history.failedCtaSettingsOnly")}
+                      </button>
+                    )}
+                  </p>
+                )}
+                {isAuthError && (
+                  <p className="text-xs text-muted-foreground mt-1">
                     <button
                       onClick={() => onOpenSettings?.()}
                       className="text-primary hover:underline cursor-pointer"
                     >
-                      {t("controlPanel.history.failedCtaSettingsOnly")}
+                      {t("controlPanel.history.failedCtaSignIn")}
                     </button>
+                  </p>
+                )}
+                {isLimitError && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {t("controlPanel.history.failedLimitReached")}
+                  </p>
+                )}
+                {isOfflineError && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {t("controlPanel.history.failedOffline")}
+                  </p>
+                )}
+              </div>
+            </div>
+          ) : (
+            <p className="flex-1 min-w-0 text-foreground text-sm leading-[1.5] break-words">
+              {item.text}
+            </p>
+          )}
+
+          <div
+            className={cn(
+              "flex items-center gap-0.5 shrink-0 transition-opacity duration-150",
+              isFailed ? "opacity-100" : isHovered ? "opacity-100" : "opacity-0"
+            )}
+          >
+            {isFailed && hasAudio && (
+              <Tooltip content={t("controlPanel.history.retryTranscription")}>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={handleRetry}
+                  disabled={isRetrying}
+                  className="h-6 w-6 rounded-sm text-destructive hover:text-destructive hover:bg-destructive/10"
+                >
+                  {isRetrying ? (
+                    <Loader2 size={12} className="animate-spin" />
+                  ) : (
+                    <RotateCcw size={12} />
                   )}
-                </p>
-              )}
-              {isAuthError && (
-                <p className="text-xs text-muted-foreground mt-1">
-                  <button
-                    onClick={() => onOpenSettings?.()}
-                    className="text-primary hover:underline cursor-pointer"
-                  >
-                    {t("controlPanel.history.failedCtaSignIn")}
-                  </button>
-                </p>
-              )}
-              {isLimitError && (
-                <p className="text-xs text-muted-foreground mt-1">
-                  {t("controlPanel.history.failedLimitReached")}
-                </p>
-              )}
-              {isOfflineError && (
-                <p className="text-xs text-muted-foreground mt-1">
-                  {t("controlPanel.history.failedOffline")}
+                </Button>
+              </Tooltip>
+            )}
+            {!isFailed && hasRawText && (
+              <Tooltip content={t("controlPanel.history.viewRawTranscript")}>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  className={cn(
+                    "h-6 w-6 rounded-sm text-muted-foreground hover:text-primary hover:bg-primary/10",
+                    isExpanded && "text-primary bg-primary/8"
+                  )}
+                >
+                  <FileText size={12} />
+                </Button>
+              </Tooltip>
+            )}
+            {hasAudio && (
+              <Tooltip content={t(getShowInFolderKey())}>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => onShowAudioInFolder?.(item.id)}
+                  className="h-6 w-6 rounded-sm text-muted-foreground hover:text-primary hover:bg-primary/10"
+                >
+                  <FolderOpen size={12} />
+                </Button>
+              </Tooltip>
+            )}
+            {!isFailed && hasAudio && (
+              <Tooltip content={t("controlPanel.history.retryTranscription")}>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={handleRetry}
+                  disabled={isRetrying}
+                  className="h-6 w-6 rounded-sm text-muted-foreground hover:text-primary hover:bg-primary/10"
+                >
+                  {isRetrying ? (
+                    <Loader2 size={12} className="animate-spin" />
+                  ) : (
+                    <RotateCcw size={12} />
+                  )}
+                </Button>
+              </Tooltip>
+            )}
+            {showUtilityGroup && <div className="w-px h-3 bg-border/30" />}
+            {!isFailed && (
+              <Tooltip content={t("controlPanel.history.copyText")}>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => onCopy(item.text)}
+                  className="h-6 w-6 rounded-sm text-muted-foreground hover:text-foreground hover:bg-foreground/10"
+                >
+                  <Copy size={12} />
+                </Button>
+              </Tooltip>
+            )}
+            <Tooltip content={t("controlPanel.history.deleteItem")}>
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => onDelete(item.id)}
+                className="h-6 w-6 rounded-sm text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+              >
+                <Trash2 size={12} />
+              </Button>
+            </Tooltip>
+          </div>
+        </div>
+
+        {!isFailed && (
+          <div
+            className={cn(
+              "overflow-hidden transition-all duration-200",
+              isExpanded ? "max-h-96" : "max-h-0"
+            )}
+          >
+            <div className="border-t border-border/20 mt-2 pt-2">
+              <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                {t("controlPanel.history.rawTranscript")}
+              </span>
+              <p className="text-xs text-muted-foreground/80 leading-relaxed mt-1">{item.raw_text}</p>
+              {item.raw_text === item.text && (
+                <p className="text-[10px] text-muted-foreground/50 italic mt-1">
+                  {t("controlPanel.history.noAiProcessing")}
                 </p>
               )}
             </div>
           </div>
-        ) : (
-          <p className="flex-1 min-w-0 text-foreground text-sm leading-[1.5] break-words">
-            {item.text}
-          </p>
         )}
-
-        <div
-          className={cn(
-            "flex items-center gap-0.5 shrink-0 transition-opacity duration-150",
-            isFailed ? "opacity-100" : isHovered ? "opacity-100" : "opacity-0"
-          )}
-        >
-          {isFailed && hasAudio && (
-            <Tooltip content={t("controlPanel.history.retryTranscription")}>
-              <Button
-                size="icon"
-                variant="ghost"
-                onClick={handleRetry}
-                disabled={isRetrying}
-                className="h-6 w-6 rounded-sm text-destructive hover:text-destructive hover:bg-destructive/10"
-              >
-                {isRetrying ? (
-                  <Loader2 size={12} className="animate-spin" />
-                ) : (
-                  <RotateCcw size={12} />
-                )}
-              </Button>
-            </Tooltip>
-          )}
-          {!isFailed && hasRawText && (
-            <Tooltip content={t("controlPanel.history.viewRawTranscript")}>
-              <Button
-                size="icon"
-                variant="ghost"
-                onClick={() => setIsExpanded(!isExpanded)}
-                className={cn(
-                  "h-6 w-6 rounded-sm text-muted-foreground hover:text-primary hover:bg-primary/10",
-                  isExpanded && "text-primary"
-                )}
-              >
-                <FileText size={12} />
-              </Button>
-            </Tooltip>
-          )}
-          {hasAudio && (
-            <Tooltip content={t(getShowInFolderKey())}>
-              <Button
-                size="icon"
-                variant="ghost"
-                onClick={() => onShowAudioInFolder?.(item.id)}
-                className="h-6 w-6 rounded-sm text-muted-foreground hover:text-primary hover:bg-primary/10"
-              >
-                <FolderOpen size={12} />
-              </Button>
-            </Tooltip>
-          )}
-          {!isFailed && hasAudio && (
-            <Tooltip content={t("controlPanel.history.retryTranscription")}>
-              <Button
-                size="icon"
-                variant="ghost"
-                onClick={handleRetry}
-                disabled={isRetrying}
-                className="h-6 w-6 rounded-sm text-muted-foreground hover:text-primary hover:bg-primary/10"
-              >
-                {isRetrying ? (
-                  <Loader2 size={12} className="animate-spin" />
-                ) : (
-                  <RotateCcw size={12} />
-                )}
-              </Button>
-            </Tooltip>
-          )}
-          {showUtilityGroup && <div className="w-px h-3 bg-border/30" />}
-          {!isFailed && (
-            <Tooltip content={t("controlPanel.history.copyText")}>
-              <Button
-                size="icon"
-                variant="ghost"
-                onClick={() => onCopy(item.text)}
-                className="h-6 w-6 rounded-sm text-muted-foreground hover:text-foreground hover:bg-foreground/10"
-              >
-                <Copy size={12} />
-              </Button>
-            </Tooltip>
-          )}
-          <Tooltip content={t("controlPanel.history.deleteItem")}>
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() => onDelete(item.id)}
-              className="h-6 w-6 rounded-sm text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-            >
-              <Trash2 size={12} />
-            </Button>
-          </Tooltip>
-        </div>
       </div>
-
-      {!isFailed && (
-        <div
-          className={cn(
-            "overflow-hidden transition-all duration-200",
-            isExpanded ? "max-h-96" : "max-h-0"
-          )}
-        >
-          <div className="border-t border-border/20 mt-2 pt-2">
-            <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
-              {t("controlPanel.history.rawTranscript")}
-            </span>
-            <p className="text-xs text-muted-foreground/80 leading-relaxed mt-1">{item.raw_text}</p>
-            {item.raw_text === item.text && (
-              <p className="text-[10px] text-muted-foreground/50 italic mt-1">
-                {t("controlPanel.history.noAiProcessing")}
-              </p>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

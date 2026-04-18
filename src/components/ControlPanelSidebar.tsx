@@ -12,6 +12,7 @@ import {
   UserCircle,
   X,
   Search,
+  Mic,
 } from "lucide-react";
 import logoIcon from "../assets/icon.png";
 import { useTranslation } from "react-i18next";
@@ -94,13 +95,28 @@ export default function ControlPanelSidebar({
 
   return (
     <div className="w-48 h-full shrink-0 border-r border-border/15 dark:border-white/6 flex flex-col bg-surface-1/60 dark:bg-surface-1">
+      {/* App brand header — drag region on macOS */}
       <div
-        className="w-full h-10 shrink-0"
+        className="flex items-center gap-2.5 px-3.5 h-10 shrink-0"
         style={{ WebkitAppRegion: "drag" } as React.CSSProperties}
-      />
+      >
+        {platform === "darwin" ? (
+          /* macOS: leave room for traffic lights (~76px) */
+          <div className="w-[76px] shrink-0" />
+        ) : null}
+        <img
+          src={logoIcon}
+          alt="OpenWhispr"
+          className="w-5 h-5 rounded-[5px] shrink-0 select-none"
+          draggable={false}
+        />
+        <span className="text-[12.5px] font-semibold text-foreground/80 dark:text-foreground/70 tracking-[-0.01em] truncate select-none">
+          OpenWhispr
+        </span>
+      </div>
 
       {onOpenSearch && (
-        <div className="px-2 pt-2 pb-1">
+        <div className="px-2 pt-1 pb-1">
           <button
             onClick={onOpenSearch}
             className="group flex items-center w-full h-7 px-2.5 rounded-md border border-border/70 dark:border-white/25 bg-transparent hover:bg-foreground/5 dark:hover:bg-white/5 transition-colors gap-2 outline-none focus-visible:ring-1 focus-visible:ring-primary/30"
@@ -121,7 +137,7 @@ export default function ControlPanelSidebar({
         </div>
       )}
 
-      <nav className="flex flex-col gap-0.5 px-2 pt-2 pb-2">
+      <nav className="flex flex-col gap-0.5 px-2 pt-1.5 pb-2">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeView === item.id;
@@ -131,13 +147,17 @@ export default function ControlPanelSidebar({
               key={item.id}
               onClick={() => onViewChange(item.id)}
               className={cn(
-                "group relative flex items-center gap-2.5 w-full h-8 px-2.5 rounded-md outline-none transition-colors duration-150 text-left",
+                "group relative flex items-center gap-2.5 w-full h-8 px-2.5 rounded-md outline-none transition-colors duration-150 text-left overflow-hidden",
                 "focus-visible:ring-1 focus-visible:ring-primary/30",
                 isActive
                   ? "bg-primary/8 dark:bg-primary/10"
                   : "hover:bg-foreground/4 dark:hover:bg-white/4 active:bg-foreground/6"
               )}
             >
+              {/* Active left-edge accent bar */}
+              {isActive && (
+                <span className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-full bg-primary" />
+              )}
               <Icon
                 size={15}
                 className={cn(
@@ -168,7 +188,9 @@ export default function ControlPanelSidebar({
         <div className="px-2 pb-2">
           <div className="rounded-lg border border-destructive/25 bg-destructive/5 dark:bg-destructive/10 p-3">
             <div className="flex flex-col items-center text-center">
-              <img src={logoIcon} alt="" className="w-7 h-7 rounded-md mb-2" />
+              <div className="w-7 h-7 rounded-md bg-destructive/10 dark:bg-destructive/15 flex items-center justify-center mb-2">
+                <Mic size={14} className="text-destructive" />
+              </div>
               <p className="text-xs font-medium text-foreground mb-0.5">
                 {t("sidebar.limitReached")}
               </p>
@@ -272,22 +294,29 @@ export default function ControlPanelSidebar({
           }
         />
 
+        {/* User section */}
         <div className="mx-1 h-px bg-border/10 dark:bg-white/6 my-1.5!" />
 
         <div className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md">
           {userImage ? (
-            <img src={userImage} alt="" className="w-6 h-6 rounded-full shrink-0 object-cover" />
+            <img
+              src={userImage}
+              alt=""
+              className="w-6 h-6 rounded-full shrink-0 object-cover ring-1 ring-border/20"
+            />
           ) : (
-            <UserCircle size={18} className="shrink-0 text-foreground/50 dark:text-foreground/45" />
+            <div className="w-6 h-6 rounded-full shrink-0 bg-muted flex items-center justify-center ring-1 ring-border/20">
+              <UserCircle size={15} className="text-foreground/45 dark:text-foreground/40" />
+            </div>
           )}
           <div className="flex-1 min-w-0">
             {isSignedIn && (userName || userEmail) ? (
               <>
-                <p className="text-xs text-foreground/80 dark:text-foreground/80 truncate leading-tight">
+                <p className="text-xs text-foreground/80 dark:text-foreground/80 truncate leading-tight font-medium">
                   {userName || t("sidebar.defaultUser")}
                 </p>
                 {userEmail && (
-                  <p className="text-xs text-foreground/55 dark:text-foreground/55 truncate leading-tight">
+                  <p className="text-[10.5px] text-foreground/45 dark:text-foreground/45 truncate leading-tight">
                     {userEmail}
                   </p>
                 )}
