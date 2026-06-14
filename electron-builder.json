@@ -248,7 +248,7 @@
   },
   "publish": {
     "provider": "github",
-    "owner": "OpenWhispr",
+    "owner": "gsonline",
     "repo": "openwhispr",
     "private": false,
     "releaseType": "draft"
